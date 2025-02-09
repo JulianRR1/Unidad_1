@@ -41,6 +41,24 @@ class CustomUserCreationForm(UserCreationForm):
         
         return tel
 
+    def clean_password2(self):
+        password1 = self.cleaned_data.get("password1")
+        password2 = self.cleaned_data.get("password2")
+
+        if not password1 or not password2:
+            raise forms.ValidationError("Ambas contraseñas son obligatorias.")
+
+        if password1 != password2:
+            raise forms.ValidationError("Las contraseñas no coinciden.")
+
+        # Validar el formato de la contraseña
+        if not re.match(r"^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$", password1):
+            raise forms.ValidationError(
+                "La contraseña debe tener al menos 8 caracteres, incluir una letra mayúscula, un número y un carácter especial (!@#$%^&*)."
+            )
+
+        return password2
+
     def clean(self):
         cleaned_data = super().clean()
         email = cleaned_data.get("email")
