@@ -173,5 +173,26 @@ class CustomUserCreationForm(UserCreationForm):
 
 
 class CustomUserLoginForm(AuthenticationForm):
-    pass
+    username  = forms.CharField(
+        label="Email", 
+        max_length=150,
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Correo electrónico'})
+    )
+    password = forms.CharField(
+        label="Password", 
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Contraseña'})
+    )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        username = cleaned_data.get("username")
+        password = cleaned_data.get("password")
+
+        if username and password:
+            user = authenticate(username=username, password=password) 
+            if not user:
+                raise forms.ValidationError("Usuario o contraseña incorrectos.")
+
+        return cleaned_data
+    ##pass
  

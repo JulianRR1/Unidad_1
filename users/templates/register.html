@@ -24,25 +24,32 @@
     <div class="container d-flex justify-content-center align-items-center vh-100">
         <div class="row justify-content-center w-100">
             <div class="col-7">
-                <form method="post" class="mt-4">
-                    {% csrf_token %}
-
-                    {% for field in form %}
-                    <div class="mb-3">
-                        {{ field.label_tag }}
-                        {{ field }}
-
-                        {% if field.errors %}
-                        <ul class="errorlist text-danger">
-                            {% for error in field.errors %}
-                            <li>{{ error }}</li>
-                            {% endfor %}
-                        </ul>
-                        {% endif %}
+                <div class="shadow-lg p-3 mb-5 bg-body-tertiary rounded p-5">
+                    <div class=" align-items-center text-center mt-2">
+                        <h1 class="">Inicio de sesion</h1>
                     </div>
-                    {% endfor %}
-                    <button type="submit" class="btn btn-primary">Registrarse</button>
-                </form>
+                    <form method="post" class="mt-4">
+                        {% csrf_token %}
+
+                        {% for field in form %}
+                        <div class="mb-3">
+                            {{ field.label_tag }}
+                            {{ field }}
+
+                            {% if field.errors %}
+                            <ul class="errorlist text-danger">
+                                {% for error in field.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                        <div class="text-center mt-5">
+                            <button type="submit" class="btn btn-primary">Registrarse</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
