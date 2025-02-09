@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <form>
+        <input type="text" name="nombre" placeholder="ingrese nombre"/>
+        <input type="number" name="edad" placeholder="ingrese edad"/>
+        <button type="submit">Enviar...</button>
+    </form>
+
+    <script async src="https://cse.google.com/cse.js?cx=c4fd64db1f0804b55">
+    </script>
+    <div class="gcse-search"></div>
+
+    {% if objeto %}
+
+    <!-- Todo esto se pinta -->
+
+    <h1>{{saludo}}</h1>
+    <h2>{{objeto.nombres}}</h2>
+    <h2>{{objeto.descripcion}}</h2>
+
+    {% endif %}
+
+    {% if objeto %}
+        <ul>
+        {% for persona in personas%}
+            <li>{{persona.nombres}}</li>
+        {%endfor%}
+        </ul>
+
+    {% endif %}
+
+</body>
+</html>
