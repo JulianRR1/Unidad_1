@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .models import Categoria
 from django.http import JsonResponse
 from .forms import categoriaForm
+import json
 
 def lista_categorias(request):
     categorias = Categoria.objects.all()
@@ -30,3 +31,17 @@ def agregar_categoria(request):
 def vista_categorias(request):
     return render(request, 'categorias.html')
 
+
+
+def registrar_categoria(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body) #Hace que el parametro se vuelva json
+            categoria = Categoria.objects.create(
+                nombre = data['nombre'],
+                imagen = data['imagen']
+            )
+            return JsonResponse({'mensaje': 'Registro exitoso', 'id':categoria.id},status=200)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+    return JsonResponse({'error': 'Metodo no soportado'}, status=405)
