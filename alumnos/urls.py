@@ -4,9 +4,9 @@ from rest_framework.routers import SimpleRouter
 
 router = SimpleRouter()
 #Registrar path comun para las rutas
-router.register(r'api',ProductoViewset)
+router.register(r'api',AlumnoViewset)
 
 urlpatterns = [
+    path('formulario/', formView, name='formulario'),
     path('', include(router.urls)),
-    path('agregar/', agregar_producto)
 ]

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="formulario">
+        <h2>Formulario Alumno</h2>
+        <form id="alumnoForm" method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="hidden" id="alumnoId">
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
+    
+    <div id="usuarios">
+        <h2>Lista de Alumnos</h2>
+        <ul id="listaUsuarios"></ul>
+    </div>
+
+    <script>
+        const API_URL = "http://127.0.0.1:8000/alumnos/api/";
+        const form = document.getElementById("alumnoForm");
+        const listaUsuarios = document.getElementById("listaUsuarios");
+        const inputId = document.getElementById("alumnoId");
+
+        function obtenerUsuarios() {
+            fetch(API_URL)
+                .then(response => response.json())
+                .then(data => {
+                    listaUsuarios.innerHTML = "";
+                    data.forEach(usuario => {
+                        const li = document.createElement("li");
+                        li.innerHTML = `${usuario.nombre} ${usuario.apellido} - ${usuario.edad} años - ${usuario.matricula} - ${usuario.email} 
+                            <button onclick="editarUsuario(${usuario.id}, '${usuario.nombre}', '${usuario.apellido}', ${usuario.edad}, '${usuario.matricula}', '${usuario.email}')">Editar</button>
+                            <button onclick="eliminarUsuario(${usuario.id})">Eliminar</button>`;
+                        listaUsuarios.appendChild(li);
+                    });
+                })
+                .catch(error => console.error("Error al obtener usuarios:", error));
+        }
+
+        form.addEventListener("submit", function(event) {
+            event.preventDefault();
+            const id = inputId.value;
+            const formData = new FormData(form);
+
+            fetch(id ? `${API_URL}${id}/` : API_URL, {
+                method: id ? "PUT" : "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(() => {
+                form.reset();
+                inputId.value = "";
+                obtenerUsuarios();
+            });
+        });
+
+        function editarUsuario(id, nombre, apellido, edad, matricula, email) {
+            inputId.value = id;
+            document.querySelector("input[name='nombre']").value = nombre;
+            document.querySelector("input[name='apellido']").value = apellido;
+            document.querySelector("input[name='edad']").value = edad;
+            document.querySelector("input[name='matricula']").value = matricula;
+            document.querySelector("input[name='email']").value = email;
+        }
+
+        function eliminarUsuario(id) {
+            fetch(`${API_URL}${id}/`, { method: "DELETE" })
+                .then(() => obtenerUsuarios());
+        }
+
+        obtenerUsuarios();
+    </script>
+</body>
+</html>

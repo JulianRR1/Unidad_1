@@ -4,13 +4,19 @@ from django import forms
 class productoForm(forms.ModelForm):
     class Meta:
         model = Producto
-        fields = ['nombre', 'precio', 'imagen']
+        fields = ['nombre', 'precio', 'imagen', 'proveedor']
 
         widgets = {
             'nombre': forms.TextInput(
                 attrs={
                     'class': 'form-input',
                     'placeholder': 'ingrese el nombre del producto'
+                }
+            ),
+            'proveedor': forms.Select(
+                attrs={
+                    'class':'form-input',
+                    'placeholder': 'Ingrese el nombre del proveedor'
                 }
             )
         }

@@ -49,10 +49,21 @@ INSTALLED_APPS = [
     'app',
     'users',
     'productos',
-    'categorias'
+    'categorias',
+    'rest_framework',
+    'alumnos',
+    'rest_framework_simplejwt',
+    'corsheaders',
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication'
+    )
+}
+
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -150,3 +161,7 @@ SEARCH_ENGINE_ID = ''
 GOOGLE_API_KEY = ''
 
 AUTH_USER_MODEL = 'users.CustomUser'
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+
